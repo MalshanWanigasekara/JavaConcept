@@ -2,6 +2,7 @@ package com.example;
 
 import com.example.Interfaces.AdditionCalculator;
 import com.example.Interfaces.SubstractionCalculator;
+import com.example.StreamAPIs.TestStreams;
 import com.example.TestOOP.Animal;
 import com.example.TestOOP.Cat;
 import com.example.TestOOP.Dog;
@@ -18,13 +19,19 @@ public class Main {
         System.out.println("Hello and welcome!");
 
         AdditionCalculator ac = (a, b) -> a+b;
-        System.out.println(ac.add(1,2));
+//        System.out.println(ac.add(1,2));
 
         SubstractionCalculator sc = (c, d) ->c-d;
-        System.out.println(sc.sub(5,2));
+//        System.out.println(sc.sub(5,2));
 
         Predicate<Integer> even = (a)-> a%2==0;
-        System.out.println(even.test(8));
+//        System.out.println(even.test(8));
+
+        TestStreams.getAllFamilyPeople();
+
+        TestStreams.sumEven();
+
+        TestStreams.EmployeeSorting();
 
 
 
