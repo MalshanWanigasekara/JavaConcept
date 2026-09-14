@@ -1,9 +1,10 @@
 package com.example.StreamAPIs;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class TestStreams {
 
@@ -37,27 +38,82 @@ public class TestStreams {
         System.out.println(Arrays.stream(numbers).filter(x-> x % 2==0).sum());
     }
 
+    public static void secondLargets(){
+        int[] numbers = {1, 2, 3, 4, 5, 6};
+
+        Arrays.stream(numbers).reduce(0, Math::max);
+        System.out.println();
+    }
+
     public static void EmployeeSorting(){
         List<Employee> employeeList = List.of(
-                new Employee("Randhaja", 14000),
-                new Employee("Sawani", 5000),
-                new Employee("Malshan",14000));
+                new Employee("IT","Randhaja", 14000),
+                new Employee("IT", "Sawani", 5000),
+                new Employee("HR", "Malshan",14000));
 
         employeeList.stream().sorted(
                 Comparator.comparing(Employee::getSalary)//ascending
                         .reversed()//descending
                         .thenComparing(Employee::getName) //only when tie breaker
         ).forEach(e->System.out.println(e.name));
+
+        Map<String, Double> departmentSal = new HashMap<>();
+
+        employeeList.forEach(employee -> {
+            if(employee.getSalary() > departmentSal.getOrDefault(employee.getDepartment(), 0.00)){
+                departmentSal.put(employee.getDepartment(), employee.getSalary());
+            }
+        });
+
+        departmentSal.entrySet().forEach(departmentSalary ->{
+            System.out.println(departmentSalary.getKey()+" : "+ departmentSalary.getValue());
+        });
+
+        Map<String, Double> depSalaryy =  employeeList.stream().collect(Collectors.toMap(Employee::getDepartment, Employee::getSalary));
+
+
+        Comparator<Employee> comparator =
+                (employee1, employee2) ->
+                        employee1.getSalary().compareTo(employee2.getSalary());
+
+
+
+
+        Map<String, Employee> employeeSalMap =  employeeList.stream().collect(
+                Collectors.toMap(
+                        Employee::getDepartment, Function.identity(), BinaryOperator.maxBy(
+                                Comparator.comparing(Employee::getSalary).thenComparing(
+                                        Employee::getName
+                                ).reversed()
+                        )
+                )
+        );
     }
+
+    public static void reduceOps(){
+        List<String> alphabetName = List.of("M", "a", "l", "s", "h", "a", "n");
+
+        String s = alphabetName.stream()
+                .map(String::toUpperCase).reduce("", (val, element) -> val+element);
+
+        System.out.println(s);
+
+    }
+
+
 }
 
 class Employee {
+    String department;
     String name;
-    double salary;
+    Double salary;
 
-    public Employee(String name, double salary) {
+
+    public Employee(String department, String name, double salary) {
         this.name = name;
         this.salary = salary;
+        this.department = department;
+
     }
 
     public String getName() {
@@ -65,8 +121,11 @@ class Employee {
     }
 
 
-    public double getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
+    public String getDepartment() {
+        return department;
+    }
 }
