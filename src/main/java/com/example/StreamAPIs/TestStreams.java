@@ -1,10 +1,13 @@
 package com.example.StreamAPIs;
 
+import java.nio.file.Files;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.nio.*;
 
 public class TestStreams {
 
@@ -32,10 +35,31 @@ public class TestStreams {
         allNames.forEach(System.out::println);
     }
 
+    public void greet() {
+
+        List<String> names = Arrays.asList("cola","Malshan");
+
+//        names = Arrays.asList("moda sawa");
+
+
+        names.forEach(name-> System.out.println(name));
+
+
+        Runnable task1 = () -> System.out.println(names);
+
+    }
+
     public static void sumEven(){
         int[] numbers = {1, 2, 3, 4, 5, 6};
 
-        System.out.println(Arrays.stream(numbers).filter(x-> x % 2==0).sum());
+        System.out.println(Arrays.stream(numbers)
+                .filter(x-> x % 2==0).sum());
+
+        final List<String> intlist = Arrays.asList("1","2","3");
+
+        intlist.add("5");
+
+//        intlist = Arrays.asList("sdasda"); incorrect reassign to final
     }
 
     public static void secondLargets(){
@@ -129,3 +153,16 @@ class Employee {
         return department;
     }
 }
+
+sealed class Payment permits CardPayment{
+
+}
+
+non-sealed class CardPayment extends Payment {
+
+}
+
+class CCPayment extends CardPayment{
+
+}
+
