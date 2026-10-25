@@ -20,6 +20,7 @@ class ConcreteClass extends TestAbstractClass {
 
 
 final class TestFinalCLass{
+//    private final int x;
     final void method3(Integer x){
 
 
@@ -35,4 +36,8 @@ final class TestFinalCLass{
             System.out.println("all finished");
         }
     };
+
+    public void setX(int y){
+//        x=y;
+    }
 }
